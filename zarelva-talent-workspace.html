@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zarelva Talent — Internal Workspace</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#0f1117;color:#e8e4dc;min-height:100vh;display:flex;flex-direction:column}
+.topbar{background:#111827;border-bottom:1px solid #1f2937;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{color:#E8953A;font-size:14px;font-weight:bold;letter-spacing:2px}
+.logo-tag{color:rgba(255,255,255,0.35);font-size:10px;margin-left:8px}
+.nav{display:flex;gap:3px}
+.nb{background:transparent;border:none;color:rgba(255,255,255,0.45);font-size:11px;padding:6px 13px;border-radius:6px;cursor:pointer;transition:all 0.2s;font-family:'Georgia',serif;letter-spacing:0.3px}
+.nb:hover{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.8)}
+.nb.active{background:#E8953A;color:#fff}
+.main{flex:1;padding:22px}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px}
+.sc{background:#161c27;border:1px solid #1f2937;border-radius:10px;padding:14px 16px}
+.sc .l{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.35);margin-bottom:8px}
+.sc .n{font-size:26px;font-weight:500;color:#e8e4dc}
+.sc .s{font-size:11px;color:rgba(255,255,255,0.3);margin-top:2px}
+.sc.accent .n{color:#E8953A}
+
+/* COMMON */
+.row-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.section-title{font-size:14px;font-weight:500;color:#e8e4dc}
+.section-sub{font-size:11px;color:rgba(255,255,255,0.3);margin-top:2px}
+.btn-primary{background:#E8953A;color:#fff;border:none;border-radius:7px;padding:8px 15px;font-size:11px;cursor:pointer;font-family:'Georgia',serif;font-weight:bold;letter-spacing:0.3px;transition:opacity 0.2s}
+.btn-primary:hover{opacity:0.85}
+.btn-ghost{background:transparent;color:rgba(255,255,255,0.5);border:1px solid #2a3140;border-radius:7px;padding:8px 13px;font-size:11px;cursor:pointer;font-family:'Georgia',serif;transition:all 0.2s}
+.btn-ghost:hover{border-color:#E8953A;color:#E8953A}
+.badge{display:inline-block;font-size:9px;padding:3px 8px;border-radius:20px;font-weight:600;letter-spacing:0.3px;text-transform:uppercase}
+.b-new{background:rgba(59,130,246,0.15);color:#60a5fa}
+.b-sourcing{background:rgba(245,158,11,0.15);color:#fbbf24}
+.b-shared{background:rgba(16,185,129,0.15);color:#34d399}
+.b-interview{background:rgba(232,149,58,0.15);color:#E8953A}
+.b-closed{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.35)}
+.b-urgent{background:rgba(239,68,68,0.15);color:#f87171}
+
+/* ROLES LIST */
+.roles{display:flex;flex-direction:column;gap:8px}
+.role-row{background:#161c27;border:1px solid #1f2937;border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:border-color 0.2s}
+.role-row:hover{border-color:#E8953A}
+.rr-left .company{font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:3px;letter-spacing:0.3px;text-transform:uppercase}
+.rr-left .title{font-size:14px;font-weight:500}
+.rr-left .meta{font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px}
+.rr-right{display:flex;align-items:center;gap:8px}
+.chevron{color:rgba(255,255,255,0.2);font-size:18px}
+
+/* DETAIL */
+.back-btn{background:none;border:none;color:#E8953A;cursor:pointer;font-size:12px;font-family:'Georgia',serif;padding:0;margin-bottom:18px;display:flex;align-items:center;gap:5px}
+.detail-layout{display:grid;grid-template-columns:300px 1fr;gap:16px}
+.panel{background:#161c27;border:1px solid #1f2937;border-radius:10px;padding:16px}
+.panel-title{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#E8953A;margin-bottom:14px}
+.info-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #1f2937;font-size:12px}
+.info-row:last-child{border:none}
+.info-row .k{color:rgba(255,255,255,0.35)}
+.info-row .v{color:#e8e4dc;text-align:right;max-width:55%}
+.skills-block{font-size:12px;color:rgba(255,255,255,0.7);line-height:1.6}
+.skills-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.3);margin-bottom:5px;margin-top:10px}
+.status-select{font-family:'Georgia',serif;font-size:12px;padding:7px 10px;border:1px solid #2a3140;border-radius:7px;background:#111827;color:#e8e4dc;outline:none;cursor:pointer}
+.status-select:focus{border-color:#E8953A}
+
+/* PIPELINE */
+.pipeline{display:flex;gap:8px;margin-bottom:16px}
+.pipe-item{flex:1;background:#111827;border-radius:8px;padding:10px;text-align:center}
+.pipe-item .pn{font-size:22px;font-weight:500;color:#e8e4dc}
+.pipe-item .pl{font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px}
+
+/* CANDIDATES */
+.cand-tbl{width:100%;border-collapse:collapse}
+.cand-tbl th{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:rgba(255,255,255,0.25);padding:8px 10px;text-align:left;border-bottom:1px solid #1f2937}
+.cand-tbl td{font-size:12px;padding:10px 10px;border-bottom:1px solid #1a2030;vertical-align:middle}
+.cand-tbl tr:hover td{background:rgba(255,255,255,0.02)}
+.fit-h{background:rgba(16,185,129,0.15);color:#34d399}
+.fit-m{background:rgba(245,158,11,0.15);color:#fbbf24}
+.fit-l{background:rgba(239,68,68,0.15);color:#f87171}
+.mini-sel{font-family:'Georgia',serif;font-size:11px;padding:4px 7px;border:1px solid #2a3140;border-radius:5px;background:#111827;color:#e8e4dc;outline:none}
+.mini-sel:focus{border-color:#E8953A}
+
+/* ADD CANDIDATE FORM */
+.add-form{background:#111827;border:1px solid #1f2937;border-radius:10px;padding:16px;margin-bottom:14px}
+.add-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.af input,.af select,.af textarea{font-family:'Georgia',serif;font-size:12px;padding:8px 10px;border:1px solid #2a3140;border-radius:6px;background:#161c27;color:#e8e4dc;outline:none;width:100%;transition:border-color 0.2s}
+.af input:focus,.af select:focus,.af textarea:focus{border-color:#E8953A}
+.af label{font-size:10px;color:rgba(255,255,255,0.35);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px}
+.af textarea{resize:vertical;min-height:55px}
+
+/* UPDATES */
+.update-card{background:#161c27;border:1px solid #1f2937;border-radius:10px;padding:16px;margin-bottom:12px}
+.uc-header{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid #1f2937}
+.uc-title{font-size:15px;font-weight:500}
+.uc-sub{font-size:11px;color:rgba(255,255,255,0.35);margin-top:3px}
+.uc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.us{background:#111827;border-radius:8px;padding:10px;text-align:center}
+.us .un{font-size:22px;font-weight:500;color:#e8e4dc}
+.us .ul{font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px}
+.copy-btn{background:transparent;border:1px solid #2a3140;color:rgba(255,255,255,0.45);border-radius:6px;padding:6px 13px;font-size:11px;cursor:pointer;font-family:'Georgia',serif;transition:all 0.2s}
+.copy-btn:hover{border-color:#E8953A;color:#E8953A}
+.shared-profile{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-top:1px solid #1a2030;font-size:12px}
+.empty{text-align:center;padding:40px;color:rgba(255,255,255,0.2);font-size:12px}
+
+/* INTAKE BADGE */
+.intake-count{background:#E8953A;color:#fff;border-radius:10px;font-size:10px;padding:2px 7px;font-weight:bold;margin-left:6px}
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <span class="logo">ZARELVA TALENT</span>
+    <span class="logo-tag">Internal Workspace</span>
+  </div>
+  <div class="nav">
+    <button class="nb active" onclick="setView('dashboard')">Dashboard</button>
+    <button class="nb" onclick="setView('candidates')">All candidates</button>
+    <button class="nb" id="intakeNavBtn" onclick="setView('submissions')">New submissions <span class="intake-count" id="newCount">0</span></button>
+    <button class="nb" onclick="setView('updates')">Client updates</button>
+  </div>
+</div>
+
+<div class="main" id="main"></div>
+
+<script>
+const STATUSES = ["New","Clarification Needed","Sourcing","Profiles Shared","Interviewing","Offer","Closed"];
+const CAND_STATUSES = ["Sourced","Contacted","Interested","Screened","Shortlisted","Shared","Rejected","Interviewing","Offered","Joined"];
+
+let view = 'dashboard';
+let detailRoleId = null;
+let showAddCand = false;
+
+let roles = [
+  {id:1,company:"Stoxii",contact:"Mayank Agola",email:"mayank@stoxii.com",title:"Growth Marketing Manager",openings:2,experience:"3–6 years",workMode:"Hybrid",location:"Bangalore",salary:"₹15L–₹22L",skills:"Performance marketing, Meta/Google ads, D2C growth, analytics",niceToHave:"Fintech/trading app experience, SQL",urgency:"Immediate",rounds:"3 rounds – HR, Hiring Mgr, Founder",empType:"Full-time",status:"Sourcing",notes:"Warm intro via Priya. Fast-growing fintech platform for retail investors."},
+  {id:2,company:"Stoxii",contact:"Mayank Agola",email:"mayank@stoxii.com",title:"Backend Engineer – Node.js",openings:1,experience:"4–7 years",workMode:"Remote",location:"Pan India",salary:"₹20L–₹30L",skills:"Node.js, TypeScript, AWS, Postgres, REST APIs",niceToHave:"Fintech domain, Redis, microservices",urgency:"15 Days",rounds:"4 rounds – Tech screen, 2 technical, CTO",empType:"Full-time",status:"New",notes:"Second priority after marketing hire."}
+];
+let candidates = [
+  {id:1,roleId:1,name:"Aditya Sharma",phone:"98XXXXXX01",company:"Zomato",exp:"4 yrs",location:"Bangalore",noticePeriod:"30 days",currentCTC:"₹14L",expectedCTC:"₹20L",source:"LinkedIn",fit:"High",status:"Shortlisted",notes:"Strong performance marketing background. Actively looking."},
+  {id:2,roleId:1,name:"Neha Patel",phone:"98XXXXXX02",company:"Swiggy",exp:"5 yrs",location:"Mumbai (open to relocate)",noticePeriod:"60 days",currentCTC:"₹16L",expectedCTC:"₹23L",source:"Naukri",fit:"High",status:"Shared",notes:"Excellent profile. Awaiting client feedback."},
+  {id:3,roleId:1,name:"Rajan Verma",phone:"98XXXXXX03",company:"Paytm",exp:"3 yrs",location:"Delhi",noticePeriod:"15 days",currentCTC:"₹12L",expectedCTC:"₹18L",source:"Referral",fit:"Medium",status:"Sourced",notes:"Good fit but location logistics unclear."},
+  {id:4,roleId:2,name:"Kiran Reddy",phone:"98XXXXXX04",company:"Razorpay",exp:"5 yrs",location:"Bangalore",noticePeriod:"45 days",currentCTC:"₹22L",expectedCTC:"₹28L",source:"LinkedIn",fit:"High",status:"Sourced",notes:"Strong Node.js + fintech background."}
+];
+let submissions = JSON.parse(localStorage.getItem('zt_submissions') || '[]');
+let nextRoleId = 3;
+let nextCandId = 5;
+
+function badgeClass(s){
+  const m={New:'b-new',Sourcing:'b-sourcing','Profiles Shared':'b-shared',Interviewing:'b-interview',Closed:'b-closed'};
+  return m[s]||'b-new';
+}
+function fitClass(f){return{High:'fit-h',Medium:'fit-m',Low:'fit-l'}[f]||''}
+function pipeCount(roleId,statuses){return candidates.filter(c=>c.roleId===roleId&&statuses.includes(c.status)).length}
+
+function setView(v,rid){
+  view=v; detailRoleId=rid||null; showAddCand=false; render();
+}
+
+function render(){
+  submissions = JSON.parse(localStorage.getItem('zt_submissions') || '[]');
+  document.getElementById('newCount').textContent = submissions.length;
+
+  const navBtns = document.querySelectorAll('.nb');
+  navBtns.forEach(b=>{
+    b.classList.remove('active');
+    if((view==='dashboard'&&b.textContent.trim().startsWith('Dashboard'))||
+       (view==='candidates'&&b.textContent.trim().startsWith('All'))||
+       (view==='submissions'&&b.textContent.trim().startsWith('New'))||
+       (view==='updates'&&b.textContent.trim().startsWith('Client'))||
+       (view==='detail')) {
+      if(view==='detail'&&b.textContent.trim().startsWith('Dashboard')) b.classList.add('active');
+      else b.classList.add('active');
+    }
+  });
+
+  let html = '';
+  if(view==='dashboard') html = renderDashboard();
+  else if(view==='detail') html = renderDetail();
+  else if(view==='candidates') html = renderAllCandidates();
+  else if(view==='submissions') html = renderSubmissions();
+  else if(view==='updates') html = renderUpdates();
+  document.getElementById('main').innerHTML = html;
+  attachEvents();
+}
+
+function renderDashboard(){
+  const active = roles.filter(r=>r.status!=='Closed').length;
+  const totalCands = candidates.length;
+  const shared = candidates.filter(c=>['Shared','Shortlisted','Interviewing','Offered','Joined'].includes(c.status)).length;
+  const companies = [...new Set(roles.map(r=>r.company))].length;
+
+  const roleCards = roles.map(r=>{
+    const cnt = candidates.filter(c=>c.roleId===r.id).length;
+    const urgent = r.urgency==='Immediate'||r.urgency==='Immediate (ASAP)' ? `<span class="badge b-urgent">Urgent</span>` : '';
+    return `<div class="role-row" onclick="setView('detail',${r.id})">
+      <div class="rr-left">
+        <div class="company">${r.company}</div>
+        <div class="title">${r.title}</div>
+        <div class="meta">${r.openings} opening${r.openings>1?'s':''} &middot; ${r.workMode} &middot; ${r.experience} &middot; ${cnt} candidate${cnt!==1?'s':''}</div>
+      </div>
+      <div class="rr-right">${urgent}<span class="badge ${badgeClass(r.status)}">${r.status}</span><span class="chevron">›</span></div>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="stats">
+      <div class="sc"><div class="l">Active roles</div><div class="n">${active}</div><div class="s">of ${roles.length} total</div></div>
+      <div class="sc accent"><div class="l">Total candidates</div><div class="n">${totalCands}</div><div class="s">tracked</div></div>
+      <div class="sc"><div class="l">Profiles shared</div><div class="n">${shared}</div><div class="s">with clients</div></div>
+      <div class="sc"><div class="l">Companies</div><div class="n">${companies}</div><div class="s">active engagements</div></div>
+    </div>
+    <div class="row-header">
+      <div><div class="section-title">All roles</div><div class="section-sub">Click to manage candidates and update status</div></div>
+      <button class="btn-primary" onclick="setView('submissions')">View new submissions</button>
+    </div>
+    <div class="roles">${roleCards||'<div class="empty">No roles yet.</div>'}</div>`;
+}
+
+function renderDetail(){
+  const r = roles.find(x=>x.id===detailRoleId);
+  if(!r) return '<p>Role not found.</p>';
+  const rc = candidates.filter(c=>c.roleId===r.id);
+
+  const pipes = [
+    {l:'Sourced',s:['Sourced','Contacted']},
+    {l:'Screened',s:['Interested','Screened']},
+    {l:'Shortlisted',s:['Shortlisted']},
+    {l:'Shared',s:['Shared']},
+    {l:'Interviewing',s:['Interviewing']},
+    {l:'Offered/Joined',s:['Offered','Joined']},
+  ];
+  const pipeHtml = pipes.map(p=>{
+    const n = rc.filter(c=>p.s.includes(c.status)).length;
+    return `<div class="pipe-item"><div class="pn">${n}</div><div class="pl">${p.l}</div></div>`;
+  }).join('');
+
+  const candRows = rc.map(c=>`
+    <tr>
+      <td><strong>${c.name}</strong><br><span style="font-size:10px;color:rgba(255,255,255,0.3)">${c.company} · ${c.exp}</span></td>
+      <td style="color:rgba(255,255,255,0.6)">${c.location}</td>
+      <td style="color:rgba(255,255,255,0.6)">${c.noticePeriod}</td>
+      <td>${c.currentCTC} → ${c.expectedCTC}</td>
+      <td style="color:rgba(255,255,255,0.6)">${c.source}</td>
+      <td><span class="badge ${fitClass(c.fit)}">${c.fit}</span></td>
+      <td><select class="mini-sel" onchange="updateCandStatus(${c.id},this.value)">${CAND_STATUSES.map(s=>`<option ${c.status===s?'selected':''}>${s}</option>`).join('')}</select></td>
+    </tr>`).join('');
+
+  const addForm = showAddCand ? `
+    <div class="add-form af">
+      <div style="font-size:11px;color:#E8953A;font-weight:bold;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Add candidate</div>
+      <div class="add-grid">
+        <div><label>Name *</label><input id="cn" placeholder="Full name"></div>
+        <div><label>Current company</label><input id="cc" placeholder="Zomato"></div>
+        <div><label>Experience</label><input id="ce" placeholder="4 yrs"></div>
+        <div><label>Location</label><input id="cl" placeholder="Bangalore"></div>
+        <div><label>Notice period</label><input id="cn2" placeholder="30 days"></div>
+        <div><label>Current CTC</label><input id="cctc" placeholder="₹14L"></div>
+        <div><label>Expected CTC</label><input id="cectc" placeholder="₹20L"></div>
+        <div><label>Source</label><select id="csrc"><option>LinkedIn</option><option>Naukri</option><option>Indeed</option><option>Referral</option><option>Direct</option></select></div>
+        <div><label>Fit</label><select id="cfit"><option>High</option><option>Medium</option><option>Low</option></select></div>
+      </div>
+      <div style="margin-bottom:10px"><label style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px">Notes</label>
+        <textarea id="cnotes" placeholder="Interest level, observations, flags..."></textarea></div>
+      <button class="btn-primary" onclick="addCand(${r.id})" style="margin-right:8px">Save candidate</button>
+      <button class="btn-ghost" onclick="showAddCand=false;render()">Cancel</button>
+    </div>` : '';
+
+  const statusOpts = STATUSES.map(s=>`<option ${r.status===s?'selected':''}>${s}</option>`).join('');
+
+  return `
+    <button class="back-btn" onclick="setView('dashboard')">← All roles</button>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px">
+      <div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">${r.company}</div>
+        <div style="font-size:20px;font-weight:500">${r.title}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:5px">${r.openings} opening${r.openings>1?'s':''} · ${r.workMode} · ${r.location} · ${r.salary}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:11px;color:rgba(255,255,255,0.3)">Status:</span>
+        <select class="status-select" onchange="updateRoleStatus(${r.id},this.value)">${statusOpts}</select>
+      </div>
+    </div>
+    <div class="detail-layout">
+      <div>
+        <div class="panel" style="margin-bottom:12px">
+          <div class="panel-title">Role brief</div>
+          <div class="info-row"><span class="k">Experience</span><span class="v">${r.experience}</span></div>
+          <div class="info-row"><span class="k">Employment</span><span class="v">${r.empType}</span></div>
+          <div class="info-row"><span class="k">Urgency</span><span class="v">${r.urgency}</span></div>
+          <div class="info-row"><span class="k">Rounds</span><span class="v">${r.rounds}</span></div>
+          <div class="info-row"><span class="k">Contact</span><span class="v">${r.contact}<br><span style="font-size:10px;color:rgba(255,255,255,0.3)">${r.email}</span></span></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Skills</div>
+          <div class="skills-label">Must-have</div>
+          <div class="skills-block">${r.skills}</div>
+          ${r.niceToHave?`<div class="skills-label">Nice-to-have</div><div class="skills-block">${r.niceToHave}</div>`:''}
+          ${r.notes?`<div style="margin-top:12px;padding-top:10px;border-top:1px solid #1f2937;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.6">${r.notes}</div>`:''}
+        </div>
+      </div>
+      <div>
+        <div class="panel">
+          <div class="panel-title">Candidate pipeline</div>
+          <div class="pipeline">${pipeHtml}</div>
+          <div class="row-header" style="margin-bottom:12px">
+            <span style="font-size:11px;color:rgba(255,255,255,0.35)">${rc.length} candidate${rc.length!==1?'s':''} tracked</span>
+            <button class="btn-primary" onclick="showAddCand=true;render()">+ Add candidate</button>
+          </div>
+          ${addForm}
+          ${rc.length>0?`<table class="cand-tbl"><thead><tr><th>Candidate</th><th>Location</th><th>Notice</th><th>CTC</th><th>Source</th><th>Fit</th><th>Status</th></tr></thead><tbody>${candRows}</tbody></table>`:'<div class="empty">No candidates yet. Add your first profile.</div>'}
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderAllCandidates(){
+  const allRows = candidates.map(c=>{
+    const r = roles.find(x=>x.id===c.roleId);
+    return `<tr>
+      <td><strong>${c.name}</strong><br><span style="font-size:10px;color:rgba(255,255,255,0.3)">${c.company} · ${c.exp}</span></td>
+      <td style="font-size:11px;color:rgba(255,255,255,0.5)">${r?r.title:'Unknown role'}</td>
+      <td style="color:rgba(255,255,255,0.6)">${c.location}</td>
+      <td>${c.currentCTC} → ${c.expectedCTC}</td>
+      <td style="color:rgba(255,255,255,0.6)">${c.noticePeriod}</td>
+      <td>${c.source}</td>
+      <td><span class="badge ${fitClass(c.fit)}">${c.fit}</span></td>
+      <td><select class="mini-sel" onchange="updateCandStatus(${c.id},this.value)">${CAND_STATUSES.map(s=>`<option ${c.status===s?'selected':''}>${s}</option>`).join('')}</select></td>
+    </tr>`;
+  }).join('');
+  return `
+    <div class="row-header"><div><div class="section-title">All candidates</div><div class="section-sub">${candidates.length} profiles across all roles</div></div></div>
+    ${candidates.length>0?`<div style="overflow-x:auto"><table class="cand-tbl"><thead><tr><th>Candidate</th><th>Role</th><th>Location</th><th>CTC</th><th>Notice</th><th>Source</th><th>Fit</th><th>Status</th></tr></thead><tbody>${allRows}</tbody></table></div>`:'<div class="empty">No candidates tracked yet.</div>'}`;
+}
+
+function renderSubmissions(){
+  if(submissions.length===0) return `
+    <div class="row-header"><div class="section-title">New submissions</div></div>
+    <div class="empty" style="padding:60px">No new intake submissions yet.<br>Share the intake form link with clients to receive hiring requirements here.</div>`;
+  const cards = submissions.map((s,i)=>`
+    <div class="panel" style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
+        <div>
+          <div class="section-title">${s.title||'Untitled role'}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:3px">${s.company||''} · ${s.contact||''} · ${s.email||''}</div>
+        </div>
+        <button class="btn-primary" onclick="convertSubmission(${i})">Convert to role</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+        <div><span style="color:rgba(255,255,255,0.3)">Openings:</span> ${s.openings||1}</div>
+        <div><span style="color:rgba(255,255,255,0.3)">Experience:</span> ${s.experience||'—'}</div>
+        <div><span style="color:rgba(255,255,255,0.3)">Work mode:</span> ${s.workMode||'—'}</div>
+        <div><span style="color:rgba(255,255,255,0.3)">Location:</span> ${s.location||'—'}</div>
+        <div><span style="color:rgba(255,255,255,0.3)">Salary:</span> ${s.salary||'—'}</div>
+        <div><span style="color:rgba(255,255,255,0.3)">Urgency:</span> ${s.urgency||'—'}</div>
+      </div>
+      ${s.skills?`<div style="margin-top:10px;padding-top:10px;border-top:1px solid #1f2937;font-size:11px;color:rgba(255,255,255,0.5)"><span style="color:rgba(255,255,255,0.3)">Skills:</span> ${s.skills}</div>`:''}
+      ${s.notes?`<div style="margin-top:6px;font-size:11px;color:rgba(255,255,255,0.5)"><span style="color:rgba(255,255,255,0.3)">Notes:</span> ${s.notes}</div>`:''}
+    </div>`).join('');
+  return `<div class="row-header"><div><div class="section-title">New submissions</div><div class="section-sub">${submissions.length} pending review</div></div></div>${cards}`;
+}
+
+function renderUpdates(){
+  const cards = roles.map(r=>{
+    const rc = candidates.filter(c=>c.roleId===r.id);
+    const sourced = rc.length;
+    const shortlisted = rc.filter(c=>['Shortlisted','Shared','Interviewing','Offered','Joined'].includes(c.status)).length;
+    const shared = rc.filter(c=>['Shared','Interviewing','Offered','Joined'].includes(c.status)).length;
+    const interviewing = rc.filter(c=>['Interviewing','Offered'].includes(c.status)).length;
+    const profiles = rc.filter(c=>['Shared','Shortlisted'].includes(c.status));
+    return `<div class="update-card">
+      <div class="uc-header">
+        <div><div class="uc-title">${r.company} — ${r.title}</div><div class="uc-sub"><span class="badge ${badgeClass(r.status)}">${r.status}</span> · ${r.openings} opening${r.openings>1?'s':''}</div></div>
+        <button class="copy-btn" onclick="copyUpdate(${r.id})">Copy update ↗</button>
+      </div>
+      <div class="uc-stats">
+        <div class="us"><div class="un">${sourced}</div><div class="ul">Sourced</div></div>
+        <div class="us"><div class="un">${shortlisted}</div><div class="ul">Shortlisted</div></div>
+        <div class="us"><div class="un">${shared}</div><div class="ul">Shared</div></div>
+        <div class="us"><div class="un">${interviewing}</div><div class="ul">Interviewing</div></div>
+      </div>
+      ${profiles.map(c=>`<div class="shared-profile"><span>${c.name} · ${c.company} · ${c.exp} · ${c.expectedCTC}</span><span class="badge ${fitClass(c.fit)}">${c.fit} fit</span></div>`).join('')}
+    </div>`;
+  }).join('');
+  return `<div class="row-header"><div class="section-title">Client updates</div><div class="section-sub">Copyable progress summaries to share with clients</div></div>${cards||'<div class="empty">No roles yet.</div>'}`;
+}
+
+function attachEvents(){}
+
+window.updateRoleStatus = function(id,val){
+  const r=roles.find(x=>x.id===id); if(r){r.status=val;render();}
+};
+window.updateCandStatus = function(id,val){
+  const c=candidates.find(x=>x.id===id); if(c){c.status=val;render();}
+};
+window.addCand = function(roleId){
+  const name=document.getElementById('cn')?.value?.trim();
+  if(!name) return;
+  candidates.push({
+    id:nextCandId++, roleId,
+    name,
+    company:document.getElementById('cc')?.value||'',
+    exp:document.getElementById('ce')?.value||'',
+    location:document.getElementById('cl')?.value||'',
+    noticePeriod:document.getElementById('cn2')?.value||'',
+    currentCTC:document.getElementById('cctc')?.value||'',
+    expectedCTC:document.getElementById('cectc')?.value||'',
+    source:document.getElementById('csrc')?.value||'LinkedIn',
+    fit:document.getElementById('cfit')?.value||'Medium',
+    status:'Sourced',
+    notes:document.getElementById('cnotes')?.value||''
+  });
+  showAddCand=false; render();
+};
+window.convertSubmission = function(i){
+  const s=submissions[i];
+  if(!s) return;
+  roles.push({
+    id:nextRoleId++,
+    company:s.company||'',contact:s.contact||'',email:s.email||'',
+    title:s.title||'Untitled',openings:parseInt(s.openings)||1,
+    experience:s.experience||'',workMode:s.workMode||'',
+    location:s.location||'',salary:s.salary||'',
+    skills:s.skills||'',niceToHave:s.niceToHave||'',
+    urgency:s.urgency||'',rounds:s.rounds||'',
+    empType:s.empType||'Full-time',notes:s.notes||'',status:'New'
+  });
+  submissions.splice(i,1);
+  localStorage.setItem('zt_submissions',JSON.stringify(submissions));
+  setView('dashboard');
+};
+window.copyUpdate = function(roleId){
+  const r=roles.find(x=>x.id===roleId);
+  const rc=candidates.filter(c=>c.roleId===roleId);
+  const sourced=rc.length;
+  const shared=rc.filter(c=>['Shared','Interviewing','Offered','Joined'].includes(c.status)).length;
+  const shortlisted=rc.filter(c=>['Shortlisted','Shared','Interviewing','Offered','Joined'].includes(c.status)).length;
+  const names=rc.filter(c=>['Shared','Shortlisted'].includes(c.status)).map(c=>`  - ${c.name} | ${c.company} | ${c.exp} | ${c.expectedCTC}`).join('\n');
+  const text=`Hiring Update — ${r.title} at ${r.company}\n\nStatus: ${r.status}\n\nCandidates sourced: ${sourced}\nShortlisted: ${shortlisted}\nShared with you: ${shared}\n\n${names?'Shared profiles:\n'+names+'\n\n':''}Next step: Please share feedback on the profiles above. We will continue sourcing and share additional candidates based on your inputs.\n\n— Priya | Zarelva Talent\nhello@zarelva.com`;
+  navigator.clipboard?.writeText(text).then(()=>alert('Update copied. Paste directly into WhatsApp or email.'));
+};
+
+render();
+</script>
+</body>
+</html>
