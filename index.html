@@ -13,7 +13,6 @@ body{font-family:'Georgia',serif;background:#f7f5f0;color:#1a1a1a;min-height:100
 .managed-by{font-size:12px;color:rgba(255,255,255,0.6)}
 .managed-by strong{color:#E8953A}
 .wrap{max-width:660px;margin:0 auto;padding:32px 20px 60px}
-
 .hero{background:#1B3A5C;border-radius:14px;padding:28px 28px 22px;margin-bottom:24px;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;right:-30px;top:-30px;width:160px;height:160px;border-radius:50%;background:rgba(232,149,58,0.07)}
 .hero h1{color:#fff;font-size:20px;font-weight:normal;line-height:1.4;margin-bottom:6px}
@@ -22,7 +21,6 @@ body{font-family:'Georgia',serif;background:#f7f5f0;color:#1a1a1a;min-height:100
 .trust-pills{display:flex;gap:8px;flex-wrap:wrap}
 .pill{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 12px;font-size:11px;color:rgba(255,255,255,0.7)}
 .pill span{color:#E8953A;margin-right:4px}
-
 .card{background:#fff;border:1px solid #e8e4dc;border-radius:12px;padding:20px 22px;margin-bottom:14px}
 .card-title{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#E8953A;font-weight:bold;margin-bottom:16px;display:flex;align-items:center;gap:6px}
 .card-title::after{content:'';flex:1;height:1px;background:#f0ece4}
@@ -35,18 +33,16 @@ body{font-family:'Georgia',serif;background:#f7f5f0;color:#1a1a1a;min-height:100
 .field textarea{resize:vertical;min-height:80px;line-height:1.6}
 .field input::placeholder,.field textarea::placeholder{color:#bbb}
 .required{color:#E8953A}
-
 .next-steps{background:#f0f4f8;border:1px solid #dde6ef;border-radius:10px;padding:16px 18px;margin-bottom:20px}
 .next-steps h3{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:#1B3A5C;font-weight:bold;margin-bottom:12px}
 .step-list{display:flex;flex-direction:column;gap:8px}
 .step{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:#444}
 .step-dot{width:18px;height:18px;min-width:18px;border-radius:50%;background:#1B3A5C;color:#E8953A;font-size:10px;font-weight:bold;display:flex;align-items:center;justify-content:center;margin-top:1px}
-
 .submit-section{margin-top:4px}
 .submit-btn{width:100%;padding:14px;background:#1B3A5C;color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:bold;cursor:pointer;font-family:'Georgia',serif;letter-spacing:0.5px;transition:background 0.2s;display:flex;align-items:center;justify-content:center;gap:8px}
 .submit-btn:hover{background:#E8953A}
+.submit-btn:disabled{opacity:0.6;cursor:not-allowed}
 .submit-note{text-align:center;font-size:11px;color:#999;margin-top:10px}
-
 .success{text-align:center;padding:50px 20px}
 .success-icon{width:56px;height:56px;background:#1B3A5C;border-radius:50%;margin:0 auto 18px;display:flex;align-items:center;justify-content:center}
 .check{width:24px;height:24px;stroke:#E8953A;stroke-width:2.5;fill:none}
@@ -57,7 +53,6 @@ body{font-family:'Georgia',serif;background:#f7f5f0;color:#1a1a1a;min-height:100
 .st-row:last-child{border:none}
 .st-row .label{color:#666}
 .st-row .val{color:#1B3A5C;font-weight:bold}
-
 .footer{text-align:center;padding:20px;font-size:11px;color:#bbb}
 .footer a{color:#E8953A;text-decoration:none}
 </style>
@@ -87,26 +82,26 @@ body{font-family:'Georgia',serif;background:#f7f5f0;color:#1a1a1a;min-height:100
       <div class="card">
         <div class="card-title">Company &amp; contact</div>
         <div class="grid">
-          <div class="field"><label>Company name <span class="required">*</span></label><input id="f_company" required placeholder="Stoxii"></div>
-          <div class="field"><label>Your name <span class="required">*</span></label><input id="f_contact" required placeholder="Mayank Agola"></div>
-          <div class="field"><label>Work email <span class="required">*</span></label><input id="f_email" type="email" required placeholder="you@company.com"></div>
-          <div class="field"><label>Phone (optional)</label><input id="f_phone" placeholder="+91 XXXXX XXXXX"></div>
+          <div class="field"><label>Company name <span class="required">*</span></label><input id="f_company" name="company" required placeholder="Stoxii"></div>
+          <div class="field"><label>Your name <span class="required">*</span></label><input id="f_contact" name="contact" required placeholder="Mayank Agola"></div>
+          <div class="field"><label>Work email <span class="required">*</span></label><input id="f_email" name="email" type="email" required placeholder="you@company.com"></div>
+          <div class="field"><label>Phone (optional)</label><input id="f_phone" name="phone" placeholder="+91 XXXXX XXXXX"></div>
         </div>
       </div>
 
       <div class="card">
         <div class="card-title">Role details</div>
         <div class="grid">
-          <div class="field"><label>Job title <span class="required">*</span></label><input id="f_title" required placeholder="Growth Marketing Manager"></div>
-          <div class="field"><label>Number of openings</label><input id="f_openings" type="number" min="1" value="1"></div>
+          <div class="field"><label>Job title <span class="required">*</span></label><input id="f_title" name="job_title" required placeholder="Growth Marketing Manager"></div>
+          <div class="field"><label>Number of openings</label><input id="f_openings" name="openings" type="number" min="1" value="1"></div>
           <div class="field"><label>Experience required</label>
-            <select id="f_exp">
+            <select id="f_exp" name="experience">
               <option>0–2 years</option><option>2–4 years</option>
               <option selected>3–6 years</option><option>4–7 years</option>
               <option>5–10 years</option><option>8+ years</option>
             </select></div>
           <div class="field"><label>Employment type</label>
-            <select id="f_emptype">
+            <select id="f_emptype" name="employment_type">
               <option>Full-time</option><option>Contract</option><option>Freelance</option>
             </select></div>
         </div>
@@ -116,13 +111,13 @@ body{font-family:'Georgia',serif;background:#f7f5f0;color:#1a1a1a;min-height:100
         <div class="card-title">Work setup &amp; compensation</div>
         <div class="grid">
           <div class="field"><label>Work mode</label>
-            <select id="f_workmode">
+            <select id="f_workmode" name="work_mode">
               <option>Onsite</option><option>Remote</option><option>Hybrid</option>
             </select></div>
-          <div class="field"><label>Location / City</label><input id="f_location" placeholder="Bangalore"></div>
-          <div class="field"><label>Salary / CTC range</label><input id="f_salary" placeholder="e.g. ₹15L–₹22L"></div>
+          <div class="field"><label>Location / City</label><input id="f_location" name="location" placeholder="Bangalore"></div>
+          <div class="field"><label>Salary / CTC range</label><input id="f_salary" name="salary_range" placeholder="e.g. ₹15L–₹22L"></div>
           <div class="field"><label>Budget flexibility</label>
-            <select id="f_flex">
+            <select id="f_flex" name="budget_flexibility">
               <option>Somewhat flexible</option><option>Fixed budget</option><option>Open to discussion</option>
             </select></div>
         </div>
@@ -132,18 +127,18 @@ body{font-family:'Georgia',serif;background:#f7f5f0;color:#1a1a1a;min-height:100
         <div class="card-title">Skills &amp; requirements</div>
         <div class="grid full">
           <div class="field"><label>Must-have skills <span class="required">*</span></label>
-            <textarea id="f_skills" placeholder="e.g. Performance marketing, Meta/Google Ads, growth analytics, 3+ years in consumer brand"></textarea></div>
+            <textarea id="f_skills" name="must_have_skills" placeholder="e.g. Performance marketing, Meta/Google Ads, growth analytics, 3+ years in consumer brand"></textarea></div>
           <div class="field"><label>Good-to-have skills</label>
-            <textarea id="f_nice" placeholder="e.g. Fintech or trading app experience, SQL knowledge"></textarea></div>
+            <textarea id="f_nice" name="nice_to_have_skills" placeholder="e.g. Fintech or trading app experience, SQL knowledge"></textarea></div>
         </div>
         <div class="grid" style="margin-top:12px">
           <div class="field"><label>Hiring urgency</label>
-            <select id="f_urgency">
+            <select id="f_urgency" name="urgency">
               <option>Immediate (ASAP)</option><option>Within 15 days</option>
               <option>Within 30 days</option><option>No fixed timeline</option>
             </select></div>
           <div class="field"><label>Interview rounds</label>
-            <input id="f_rounds" placeholder="e.g. 3 rounds – HR, Hiring Mgr, Founder"></div>
+            <input id="f_rounds" name="interview_rounds" placeholder="e.g. 3 rounds – HR, Hiring Mgr, Founder"></div>
         </div>
       </div>
 
@@ -151,7 +146,7 @@ body{font-family:'Georgia',serif;background:#f7f5f0;color:#1a1a1a;min-height:100
         <div class="card-title">Additional context</div>
         <div class="grid full">
           <div class="field"><label>Anything else we should know?</label>
-            <textarea id="f_notes" placeholder="Company pitch for candidates, red flags to avoid, must-haves not listed above..."></textarea></div>
+            <textarea id="f_notes" name="notes" placeholder="Company pitch for candidates, red flags to avoid, must-haves not listed above..."></textarea></div>
         </div>
       </div>
 
@@ -166,7 +161,7 @@ body{font-family:'Georgia',serif;background:#f7f5f0;color:#1a1a1a;min-height:100
       </div>
 
       <div class="submit-section">
-        <button type="submit" class="submit-btn">
+        <button type="submit" class="submit-btn" id="submitBtn">
           Submit requirement
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -198,6 +193,36 @@ body{font-family:'Georgia',serif;background:#f7f5f0;color:#1a1a1a;min-height:100
   Zarelva Talent &middot; Confidential &middot; <a href="mailto:hello@zarelva.com">hello@zarelva.com</a>
 </div>
 
+<script>
+document.getElementById('intakeForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+  var form = e.target;
+  var data = new FormData(form);
+  try {
+    var response = await fetch(form.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+    if (response.ok) {
+      document.getElementById('formView').style.display = 'none';
+      document.getElementById('successView').style.display = 'block';
+      window.scrollTo(0, 0);
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Submit requirement';
+      alert('Something went wrong. Please try again or email hello@zarelva.com');
+    }
+  } catch(err) {
+    btn.disabled = false;
+    btn.textContent = 'Submit requirement';
+    alert('Connection error. Please try again.');
+  }
+});
+</script>
 
 </body>
 </html>
