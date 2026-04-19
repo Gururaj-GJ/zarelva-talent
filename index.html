@@ -82,7 +82,7 @@ body{font-family:'Georgia',serif;background:#f7f5f0;color:#1a1a1a;min-height:100
       </div>
     </div>
 
-    <form id="intakeForm">
+    <form id="intakeForm" action="https://formspree.io/f/mkokbpkp" method="POST">
 
       <div class="card">
         <div class="card-title">Company &amp; contact</div>
@@ -198,36 +198,6 @@ body{font-family:'Georgia',serif;background:#f7f5f0;color:#1a1a1a;min-height:100
   Zarelva Talent &middot; Confidential &middot; <a href="mailto:hello@zarelva.com">hello@zarelva.com</a>
 </div>
 
-<script>
-document.getElementById('intakeForm').addEventListener('submit', function(e){
-  e.preventDefault();
-  const data = {
-    company: document.getElementById('f_company').value,
-    contact: document.getElementById('f_contact').value,
-    email: document.getElementById('f_email').value,
-    phone: document.getElementById('f_phone').value,
-    title: document.getElementById('f_title').value,
-    openings: document.getElementById('f_openings').value,
-    experience: document.getElementById('f_exp').value,
-    empType: document.getElementById('f_emptype').value,
-    workMode: document.getElementById('f_workmode').value,
-    location: document.getElementById('f_location').value,
-    salary: document.getElementById('f_salary').value,
-    flex: document.getElementById('f_flex').value,
-    skills: document.getElementById('f_skills').value,
-    niceToHave: document.getElementById('f_nice').value,
-    urgency: document.getElementById('f_urgency').value,
-    rounds: document.getElementById('f_rounds').value,
-    notes: document.getElementById('f_notes').value,
-    submittedAt: new Date().toISOString()
-  };
-  const existing = JSON.parse(localStorage.getItem('zt_submissions') || '[]');
-  existing.push(data);
-  localStorage.setItem('zt_submissions', JSON.stringify(existing));
-  document.getElementById('formView').style.display = 'none';
-  document.getElementById('successView').style.display = 'block';
-  window.scrollTo(0,0);
-});
-</script>
+
 </body>
 </html>
